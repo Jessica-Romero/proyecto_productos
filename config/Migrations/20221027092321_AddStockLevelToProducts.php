@@ -16,7 +16,7 @@ class AddStockLevelToProducts extends AbstractMigration
     {
         $table = $this->table('products');
         $table->addColumn('stock_level', 'integer', [
-            'default' => null,
+            'default' => 0,
             'limit' => 11,
             'null' => false,
         ]);

@@ -23,7 +23,11 @@ class ProductsController extends AppController
         ];
         $products = $this->paginate($this->Products);
 
-        $this->set(compact('products'));
+        $count_total = $this->Products->find('all')->count();
+        $count_in_stock = $this->Products->find('all', ['conditions' => ['in_stock' => true]])->count();
+        $count_out_of_stock = $this->Products->find('all', ['conditions' => ['in_stock' => false]])->count();
+        $this->set(compact('products','count_total', 'count_in_stock', 'count_out_of_stock'));
+
     }
 
     /**

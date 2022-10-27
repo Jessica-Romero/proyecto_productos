@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
+use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Http\Client;
@@ -181,6 +182,32 @@ class ProductsTable extends Table
         Log::write('info', '{items_added} products added', ['items_added' => $items_added]);
         Log::write('info', '{items_updated} products updated', ['items_updated' =>$items_updated]);
 
+    }
+
+    public function updateStockFromTryton()
+    {
+        $http = new Client([
+            'headers' => ['Authorization' => 'Bearer ' . Configure::read('App.trytonSecret')]
+        ]);
+        $response = $http->get('https://testintegraciones.mifarma.es/mifarmadev3/productAvailability?products=[]');
+        $stock_levels = $response->getJson();
+        $result = true;
+
+        if($stock_levels){
+            foreach ($stock_levels['data'] as $item) {
+                $this->query()
+                    ->update()
+                    ->set([
+                        'stock_level' => (int)$item['quantity'],
+                    ])
+                    ->where(['sku' => (string)$item['sku']])
+                    ->execute();
+            }
+        }
+
+        Log::write('info', 'Stock updated!');
+        dd($response);
+        return $result;
     }
 
 }
