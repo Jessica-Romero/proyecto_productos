@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Log\Log;
 
 /**
  * Brands Model
@@ -85,5 +86,20 @@ class BrandsTable extends Table
         $rules->add($rules->existsIn('supplier_id', 'Suppliers'), ['errorField' => 'supplier_id']);
 
         return $rules;
+    }
+    public function addNewBrand($name)
+    {
+        $result = 0;
+        $brand = $this->newEmptyEntity();
+        $brand->name = $name;
+            if ($this->save($brand)) {
+                $result = $brand->id;
+            }else{
+                Log::write('error', 'An error ocurred adding {brand}', ['brand' => $name]);
+                $result = false;
+            }
+            Log::write('info', 'The brands added', ['brand' => $brand->name]);
+
+            return $result;
     }
 }

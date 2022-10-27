@@ -7,6 +7,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Http\Client;
+use Cake\Log\Log;
 
 /**
  * Products Model
@@ -122,4 +124,63 @@ class ProductsTable extends Table
 
         return $rules;
     }
+
+    public function updateProductsFromFeed()
+    {
+        $http = new Client(['timeout' => 600]);
+        $response = $http->get('https://minderest-transfer.atida.com/minderest.xml');
+        $xml = $response->getXml();
+        $brands = $this->Brands->find('list')->toArray();
+        $items_added = 0;
+        $items_updated = 0;
+        $result = true;
+        foreach ($xml->channel->item as $item) {
+            $sku = (string)$item->children('g',TRUE)->id;
+            $query = $this->findBySku($sku);
+
+            //If product doesn't exist
+            if(!$query->count()){
+                $product = $this->newEmptyEntity();
+                $product->id = null;
+                $product->name = $item->title;
+                $product->sku = $sku;
+                $product->in_stock = ((string)$item->children('g',TRUE)->availability=='in stock')?true:false;
+                $product->cost = (float)$item->children('g',TRUE)->cost;
+                $product->price = (float)$item->children('g',TRUE)->price;
+                $product->rating = (string)$item->rating;
+                $product->sales_last_days = (int)$item->sales_last_days;
+                $product->image = (string)$item->children('g',TRUE)->image_link;
+                $product->brand_id = array_search((string)$item->children('g',TRUE)->brand,$brands)?array_search((string)$item->children('g',TRUE)->brand,$brands):$this->Brands->addNewBrand((string)$item->children('g',TRUE)->brand);
+
+                if ($this->save($product)) {
+                    $items_added++;
+                    $result= true;
+                }else{
+                    Log::write('error', 'An error ocurred adding {sku}', ['sku' => $sku]);
+                    $result = false;
+                }
+            //If product exists
+            }else{
+                $this->query()
+                    ->update()
+                    ->set([
+                        'name' => $item->title,
+                        'in_stock' => ((string)$item->children('g',TRUE)->availability=='in stock')?true:false,
+                        'cost' => (float)$item->children('g',TRUE)->cost,
+                        'price' => (float)$item->children('g',TRUE)->price,
+                        'rating' => (string)$item->rating,
+                        'sales_last_days' => (int)$item->sales_last_days,
+                        'image' => (string)$item->children('g',TRUE)->image_link,
+                        'brand_id' => array_search((string)$item->children('g',TRUE)->brand,$brands)?array_search((string)$item->children('g',TRUE)->brand,$brands):$this->Brands->addNewBrand((string)$item->children('g',TRUE)->brand),
+                    ])
+                    ->where(['sku' => (string)$item->children('g',TRUE)->id])
+                    ->execute();
+                $items_updated++;
+            }
+        }
+        Log::write('info', '{items_added} products added', ['items_added' => $items_added]);
+        Log::write('info', '{items_updated} products updated', ['items_updated' =>$items_updated]);
+
+    }
+
 }
