@@ -43,5 +43,7 @@ class AppView extends View
     {
         parent::initialize();
         $this->initializeCakeLte();
+        $this->loadHelper('Authentication.Identity');
+        $this->loadHelper('Product');
     }
 }

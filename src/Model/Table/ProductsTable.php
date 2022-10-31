@@ -189,7 +189,7 @@ class ProductsTable extends Table
         $http = new Client([
             'headers' => ['Authorization' => 'Bearer ' . Configure::read('App.trytonSecret')]
         ]);
-        $response = $http->get('https://testintegraciones.mifarma.es/mifarmadev3/productAvailability?products=[]');
+        $response = $http->get('https://testintegraciones.mifarma.es/mifarmadev3/productAvailability');
         $stock_levels = $response->getJson();
         $result = true;
 
@@ -204,9 +204,7 @@ class ProductsTable extends Table
                     ->execute();
             }
         }
-
         Log::write('info', 'Stock updated!');
-        dd($response);
         return $result;
     }
 

@@ -45,5 +45,6 @@ class Product extends Entity
         'created' => true,
         'modified' => true,
         'brand' => true,
+        'stock_level' => true,
     ];
 }
