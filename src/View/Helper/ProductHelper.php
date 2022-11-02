@@ -10,6 +10,7 @@ class ProductHelper extends Helper
 
     public function availability($stock_available)
     {
+
         if($stock_available){
             return '<span class="badge bg-success">'.__('In stock').'</span>';
         }else{
@@ -40,4 +41,5 @@ class ProductHelper extends Helper
         return '<span class="badge bg-info">'.$rating.'</span>';
 
     }
+
 }

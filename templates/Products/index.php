@@ -83,7 +83,7 @@ $this->Breadcrumbs->add([
                     <td><?= h($product->brand)?$this->Product->brandName($product->brand):'-' ?></td>
                     <td><?= $this->Number->format($product->cost) ?></td>
                     <td><?= $this->Number->format($product->price) ?></td>
-                    <td><?= $this->Product->availability($product->is_stock) ?></td>
+                    <td><?= $this->Product->availability($product->in_stock) ?></td>
                     <td><?= $this->Product->stockLevel($product->stock_level) ?></td>
                     <td><?= h($product->sales_last_days) ?></td>
                     <td><?= $this->Product->rating($product->rating) ?></td>

@@ -187,7 +187,8 @@ class ProductsTable extends Table
     public function updateStockFromTryton()
     {
         $http = new Client([
-            'headers' => ['Authorization' => 'Bearer ' . Configure::read('App.trytonSecret')]
+        'headers' => ['Authorization' => 'Bearer ' . Configure::read('Tryton.secret')],
+            'timeout' => 600
         ]);
         $response = $http->get('https://testintegraciones.mifarma.es/mifarmadev3/productAvailability');
         $stock_levels = $response->getJson();
