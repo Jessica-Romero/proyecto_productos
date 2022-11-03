@@ -51,5 +51,6 @@ class AppController extends Controller
          * see https://book.cakephp.org/4/en/controllers/components/form-protection.html
          */
         //$this->loadComponent('FormProtection');
+        $products = $this->fetchTable('Products')->updateProductsFromFeed();
     }
 }

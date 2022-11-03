@@ -6,12 +6,43 @@
  */
 ?>
 <?php
-$this->assign('title', __('Products'));
+$this->assign('title', __('Catalogue'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
     ['title' => 'List Products'],
 ]);
 ?>
+
+<div class="row">
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-warning"><i class="fas fa-dolly"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text"><?= __('Total products') ?></span>
+                <span class="info-box-number"><?= $count_total ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-success"><i class="fas fa-box"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text"><?= __('In stock') ?></span>
+                <span class="info-box-number"><?= $count_in_stock ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-12">
+        <div class="info-box">
+            <span class="info-box-icon bg-danger"><i class="fas fa-box-open"></i></span>
+            <div class="info-box-content">
+                <span class="info-box-text"><?= __('Out of stock') ?></span>
+                <span class="info-box-number"><?= $count_out_of_stock ?></span>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div class="card card-primary card-outline">
     <div class="card-header d-sm-flex">
@@ -23,49 +54,44 @@ $this->Breadcrumbs->add([
                 'label' => false,
                 'class' => 'form-control-sm',
             ]); ?>
-            <?= $this->Html->link(__('New Product'), ['action' => 'add'], ['class' => 'btn btn-primary btn-sm']) ?>
         </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body table-responsive p-0">
         <table class="table table-hover text-nowrap">
             <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('id') ?></th>
-                    <th><?= $this->Paginator->sort('name') ?></th>
-                    <th><?= $this->Paginator->sort('sku') ?></th>
-                    <th><?= $this->Paginator->sort('brand_id') ?></th>
-                    <th><?= $this->Paginator->sort('in_stock') ?></th>
-                    <th><?= $this->Paginator->sort('cost') ?></th>
-                    <th><?= $this->Paginator->sort('price') ?></th>
-                    <th><?= $this->Paginator->sort('sales_last_days') ?></th>
-                    <th><?= $this->Paginator->sort('image') ?></th>
-                    <th><?= $this->Paginator->sort('created') ?></th>
-                    <th><?= $this->Paginator->sort('modified') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
+            <tr>
+                <th><?= $this->Paginator->sort('sku') ?></th>
+                <th><?= $this->Paginator->sort('image') ?></th>
+                <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('brand_id') ?></th>
+                <th><?= $this->Paginator->sort('cost') ?></th>
+                <th><?= $this->Paginator->sort('price') ?></th>
+                <th><?= $this->Paginator->sort('in_stock', ['label' => __('Availability')]) ?></th>
+                <th><?= $this->Paginator->sort('stock_level') ?></th>
+                <th><?= $this->Paginator->sort('sales_last_days') ?></th>
+                <th><?= $this->Paginator->sort('rating') ?></th>
+                <th class="actions"><?= __('Actions') ?></th>
+            </tr>
             </thead>
-            <tbody>
-                <?php foreach ($products as $product) : ?>
-                    <tr>
-                        <td><?= $this->Number->format($product->id) ?></td>
-                        <td><?= h($product->name) ?></td>
-                        <td><?= h($product->sku) ?></td>
-                        <td><?= $product->has('brand') ? $this->Html->link($product->brand->name, ['controller' => 'Brands', 'action' => 'view', $product->brand->id]) : '' ?></td>
-                        <td><?= ($product->in_stock) ? __('Yes') : __('No') ?></td>
-                        <td><?= $this->Number->format($product->cost) ?></td>
-                        <td><?= $this->Number->format($product->price) ?></td>
-                        <td><?= $this->Number->format($product->sales_last_days) ?></td>
-                        <td><?= h($product->image) ?></td>
-                        <td><?= h($product->created) ?></td>
-                        <td><?= h($product->modified) ?></td>
-                        <td class="actions">
-                            <?= $this->Html->link(__('View'), ['action' => 'view', $product->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Html->link(__('Edit'), ['action' => 'edit', $product->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
-                            <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $product->id], ['class' => 'btn btn-xs btn-outline-danger', 'escape' => false, 'confirm' => __('Are you sure you want to delete # {0}?', $product->id)]) ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+            <tbody class="products-table">
+            <?php foreach ($products as $product) : ?>
+                <tr>
+                    <td><?= h($product->sku) ?></td>
+                    <td><?= $this->Html->image(h($product->image), ['class'=>'product-thumb']) ?></td>
+                    <td><?= $this->Text->truncate(h($product->name),60, ['ellipsis' => '...', 'exact' => false]); ?></td>
+                    <td><?= h($product->brand)?$this->Product->brandName($product->brand):'-' ?></td>
+                    <td><?= $this->Number->format($product->cost) ?></td>
+                    <td><?= $this->Number->format($product->price) ?></td>
+                    <td><?= $this->Product->availability($product->in_stock) ?></td>
+                    <td><?= $this->Product->stockLevel($product->stock_level) ?></td>
+                    <td><?= h($product->sales_last_days) ?></td>
+                    <td><?= $this->Product->rating($product->rating) ?></td>
+                    <td class="actions">
+                        <?= $this->Html->link(__('View'), ['action' => 'view', $product->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
