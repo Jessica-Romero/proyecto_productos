@@ -9,11 +9,11 @@ use Cake\Log\Log;
 use Cake\Core\Configure;
 
 
-class UpdateStockCommand extends Command
+class UpdateFieldStockCommand extends Command
 {
     public function execute(Arguments $args, ConsoleIo $io)
     {
         ini_set('memory_limit','2048M');
-        $this->getTableLocator()->get('ProductStock')->updateStockFromTryton();
+        $this->getTableLocator()->get('ProductStock')->updateFieldStock();
     }
 }

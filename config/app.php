@@ -66,6 +66,18 @@ return [
             'locales' => [RESOURCES . 'locales' . DS],
         ],
     ],
+    'Tryton' => [
+        'secret' => '6c96dd1ceb0e4bb99a65ba30df2d5a2a4735c5321d2b4c8c968eb6cd850fec12ac53b44d98fc4135a64da90aadacaf807a8c40d4124c4273872d6c870afa31b9',
+        'urls' => [
+            'productAvailabilityUrl' => 'https://testintegraciones.mifarma.es/mifarmadev3/productAvailability',
+        ]
+    ],
+    'Atida' => [
+        'urls' => [
+            'productFeedUrl' => 'https://minderest-transfer.atida.com/minderest.xml',
+            'competitorsUrl' => 'https://atida_es:Kc4bOmOA@www.minderest.com/export/1655999885541/COMPETENCIA.csv'
+        ]
+    ],
 
     /*
      * Security and encryption configuration
@@ -169,14 +181,14 @@ return [
      *   The conventional location for custom renderers is in `src/Error`. Your exception renderer needs to
      *   implement the `render()` method and return either a string or Http\Response.
      *   `errorRenderer` - string - The class responsible for rendering PHP errors. The selected
-     *   class will be used for both web and CLI contexts. If you want different classes for each environment 
+     *   class will be used for both web and CLI contexts. If you want different classes for each environment
      *   you'll need to write that conditional logic as well. Error renderers need to
      *   to implement the `Cake\Error\ErrorRendererInterface`.
      * - `skipLog` - array - List of exceptions to skip for logging. Exceptions that
      *   extend one of the listed exceptions will also be skipped for logging.
      *   E.g.:
      *   `'skipLog' => ['Cake\Http\Exception\NotFoundException', 'Cake\Http\Exception\UnauthorizedException']`
-     * - `extraFatalErrorMemory` - int - The number of megabytes to increase the memory limit by 
+     * - `extraFatalErrorMemory` - int - The number of megabytes to increase the memory limit by
      *   when a fatal error is encountered. This allows
      *   breathing room to complete logging or error handling.
      * - `ignoredDeprecationPaths` - array - A list of glob compatible file paths that deprecations

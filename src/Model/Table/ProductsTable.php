@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Core\Configure;
 use Cake\ORM\Table;
+use Cake\Utility\Xml;
 use Cake\Validation\Validator;
 use Cake\Http\Client;
 use Cake\Log\Log;
@@ -53,7 +54,6 @@ class ProductsTable extends Table
         $this->belongsTo('Brands', [
             'foreignKey' => 'brand_id',
         ]);
-
 
     }
 
@@ -129,84 +129,39 @@ class ProductsTable extends Table
     public function updateProductsFromFeed()
     {
         $http = new Client(['timeout' => 600]);
-        $response = $http->get('https://minderest-transfer.atida.com/minderest.xml');
-        $xml = $response->getXml();
-        $brands = $this->Brands->find('list')->toArray();
+        $response = $http->get(Configure::read('Atida.urls.productFeedUrl'));
+        $xml = Xml::build($response->getStringBody(), ['parseHuge' => true]);
         $items_added = 0;
         $items_updated = 0;
         $result = true;
+        $products = array();
         foreach ($xml->channel->item as $item) {
             $sku = (string)$item->children('g',TRUE)->id;
-            $query = $this->findBySku($sku);
+            $product = $this->findBySku($sku)->first();
+            $brands = $this->Brands->find('list')->toArray();
 
             //If product doesn't exist
-            if(!$query->count()){
+            if(!$product){
                 $product = $this->newEmptyEntity();
-                $product->id = null;
                 $product->name = $item->title;
                 $product->sku = $sku;
-                $product->in_stock = ((string)$item->children('g',TRUE)->availability=='in stock')?true:false;
-                $product->cost = (float)$item->children('g',TRUE)->cost;
-                $product->price = (float)$item->children('g',TRUE)->price;
-                $product->rating = (string)$item->rating;
-                $product->sales_last_days = (int)$item->sales_last_days;
                 $product->image = (string)$item->children('g',TRUE)->image_link;
                 $product->brand_id = array_search((string)$item->children('g',TRUE)->brand,$brands)?array_search((string)$item->children('g',TRUE)->brand,$brands):$this->Brands->addNewBrand((string)$item->children('g',TRUE)->brand);
-
-                if ($this->save($product)) {
-                    $items_added++;
-                    $result= true;
-                }else{
-                    Log::write('error', 'An error ocurred adding {sku}', ['sku' => $sku]);
-                    $result = false;
-                }
-            //If product exists
+                $items_added++;
+                $products [] = $product;
+                //If product exists
             }else{
-                $this->query()
-                    ->update()
-                    ->set([
-                        'name' => $item->title,
-                        'in_stock' => ((string)$item->children('g',TRUE)->availability=='in stock')?true:false,
-                        'cost' => (float)$item->children('g',TRUE)->cost,
-                        'price' => (float)$item->children('g',TRUE)->price,
-                        'rating' => (string)$item->rating,
-                        'sales_last_days' => (int)$item->sales_last_days,
-                        'image' => (string)$item->children('g',TRUE)->image_link,
-                        'brand_id' => array_search((string)$item->children('g',TRUE)->brand,$brands)?array_search((string)$item->children('g',TRUE)->brand,$brands):$this->Brands->addNewBrand((string)$item->children('g',TRUE)->brand),
-                    ])
-                    ->where(['sku' => (string)$item->children('g',TRUE)->id])
-                    ->execute();
+                $product->name = $item->title;
+                $product->image = (string)$item->children('g',TRUE)->image_link;
+                $product->brand_id = array_search((string)$item->children('g',TRUE)->brand,$brands)?array_search((string)$item->children('g',TRUE)->brand,$brands):$this->Brands->addNewBrand((string)$item->children('g',TRUE)->brand);
+                $products[] = $product;
                 $items_updated++;
             }
         }
+        $this->saveMany($products);
         Log::write('info', '{items_added} products added', ['items_added' => $items_added]);
         Log::write('info', '{items_updated} products updated', ['items_updated' =>$items_updated]);
 
-    }
-
-    public function updateStockFromTryton()
-    {
-        $http = new Client([
-        'headers' => ['Authorization' => 'Bearer ' . Configure::read('Tryton.secret')],
-            'timeout' => 600
-        ]);
-        $response = $http->get('https://testintegraciones.mifarma.es/mifarmadev3/productAvailability');
-        $stock_levels = $response->getJson();
-        $result = true;
-
-        if($stock_levels){
-            foreach ($stock_levels['data'] as $item) {
-                $this->query()
-                    ->update()
-                    ->set([
-                        'stock_level' => (int)$item['quantity'],
-                    ])
-                    ->where(['sku' => (string)$item['sku']])
-                    ->execute();
-            }
-        }
-        Log::write('info', 'Stock updated!');
-        return $result;
     }
 
 }

@@ -22,11 +22,10 @@ class ProductsController extends AppController
             'contain' => ['Brands'],
         ];
         $products = $this->paginate($this->Products);
-
+        $brands = $this->Products->Brands->find('list', ['limit' => 200])->all();
+        $products_filters = $this->request->getSession()->read('Config.products_filters')?$this->request->getSession()->read('Config.products_filters'):[];
         $count_total = $this->Products->find('all')->count();
-        $count_in_stock = $this->Products->find('all', ['conditions' => ['in_stock' => true]])->count();
-        $count_out_of_stock = $this->Products->find('all', ['conditions' => ['in_stock' => false]])->count();
-        $this->set(compact('products','count_total', 'count_in_stock', 'count_out_of_stock'));
+        $this->set(compact('products', 'brands', 'products_filters', 'count_total'));
 
     }
 
