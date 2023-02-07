@@ -54,6 +54,21 @@ class ProductsTable extends Table
         $this->belongsTo('Brands', [
             'foreignKey' => 'brand_id',
         ]);
+        $this->belongsToMany('StockAlerts', [
+            'foreignKey' => 'product_id',
+            'targetForeignKey' => 'stockalerts_id',
+            'joinTable' => 'stockalerts_products',
+        ]);
+        $this->belongsToMany('Shops', [
+            'foreignKey' => 'product_id',
+            'targetForeignKey' => 'shop_id',
+            'joinTable' => 'products_shops',
+        ]);
+        $this->hasMany('CompetitorPrices',[
+            'sort' => ['price' => 'ASC'],
+        ]);
+        $this->hasMany('ProductPrices');
+        $this->hasMany('ProductStock');
 
     }
 

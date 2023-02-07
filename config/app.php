@@ -74,7 +74,7 @@ return [
     ],
     'Atida' => [
         'urls' => [
-            'productFeedUrl' => 'https://minderest-transfer.atida.com/minderest.xml',
+            'productFeedUrl' => 'https://mrprod:gFKWLeFXLJ5TBQ4r@minderest-transfer.atida.com/minderest.xml',
             'competitorsUrl' => 'https://atida_es:Kc4bOmOA@www.minderest.com/export/1655999885541/COMPETENCIA.csv'
         ]
     ],
