@@ -30,6 +30,7 @@
     <?= $this->Html->css('catalogue') ?>
     <?= $this->element('layout/css') ?>
     <?= $this->fetch('css') ?>
+    <?php echo $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken')); ?>
 </head>
 
 <body class="hold-transition <?= $this->CakeLte->getBodyClass() ?>">

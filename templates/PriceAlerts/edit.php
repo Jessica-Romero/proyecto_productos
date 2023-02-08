@@ -1,24 +1,24 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\StockAlert $stockAlert
+ * @var \App\Model\Entity\PriceAlert $priceAlert
  */
 ?>
 <?php
-$this->assign('title', __('Edit Stock Alert'));
+$this->assign('title', __('Edit Price Alert'));
 $this->Breadcrumbs->add([
     ['title' => 'Home', 'url' => '/'],
-    ['title' => 'List Stock Alerts', 'url' => ['action' => 'index']],
-    ['title' => 'View', 'url' => ['action' => 'view', $stockAlert->id]],
+    ['title' => 'List Price Alerts', 'url' => ['action' => 'index']],
+    ['title' => 'View', 'url' => ['action' => 'view', $priceAlert->id]],
     ['title' => 'Edit'],
 ]);
 ?>
 
 <div class="card card-primary card-outline">
-    <?= $this->Form->create($stockAlert) ?>
+    <?= $this->Form->create($priceAlert) ?>
     <div class="card-body">
         <?php
-        echo $this->Form->control('brand_id', ['options' => $brands]);?>
+        echo $this->Form->control('brand_id', ['options' => $brands]); ?>
         <p><strong> Select products </strong></p>
         <?php
         echo $this->Form->select(
@@ -26,11 +26,11 @@ $this->Breadcrumbs->add([
             $products,
             [
                 'multiple' => true,
-                'value' => array_column($stockAlert->products, 'id')
+                'value' => array_column($priceAlert->products, 'id')
             ]
         );
+        echo $this->Form->control('shop_id', ['options' => $shops]);
         echo $this->Form->control('emails');
-        echo $this->Form->control('value');
         echo $this->Form->control('active', ['custom' => true]);
         ?>
     </div>
@@ -39,8 +39,8 @@ $this->Breadcrumbs->add([
         <div class="">
             <?= $this->Form->postLink(
                 __('Delete'),
-                ['action' => 'delete', $stockAlert->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $stockAlert->id), 'class' => 'btn btn-danger']
+                ['action' => 'delete', $priceAlert->id],
+                ['confirm' => __('Are you sure you want to delete # {0}?', $priceAlert->id), 'class' => 'btn btn-danger']
             ) ?>
         </div>
         <div class="ml-auto">

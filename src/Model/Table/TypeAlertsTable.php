@@ -40,6 +40,10 @@ class TypeAlertsTable extends Table
         $this->setTable('type_alerts');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->hasMany('PriceAlerts');
+        $this->hasMany('StockAlerts');
+        $this->hasMany('Alerts');
     }
 
     /**
