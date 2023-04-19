@@ -29,7 +29,7 @@ class AppView extends View
 {
     use CakeLteTrait;
 
-    public $layout = 'CakeLte.default';
+    public $layout = 'catalogue';
     /**
      * Initialization hook method.
      *
@@ -42,8 +42,8 @@ class AppView extends View
     public function initialize(): void
     {
         parent::initialize();
+//        $this->loadHelper('Product');
         $this->initializeCakeLte();
         $this->loadHelper('Authentication.Identity');
-        $this->loadHelper('Product');
     }
 }

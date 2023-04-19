@@ -13,6 +13,7 @@ class UpdateStockCommand extends Command
 {
     public function execute(Arguments $args, ConsoleIo $io)
     {
-        $this->getTableLocator()->get('Products')->updateStockFromTryton();
+        ini_set('memory_limit','2048M');
+        $this->getTableLocator()->get('ProductStock')->updateStockFromTryton();
     }
 }
