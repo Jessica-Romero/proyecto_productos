@@ -56,6 +56,13 @@ return static function (RouteBuilder $routes) {
          * ...and connect the rest of 'Pages' controller's URLs.
          */
         $builder->connect('/pages/*', 'Pages::display');
+
+        /*
+         * Users
+         */
+        $builder->connect('/login', ['controller' => 'Users', 'action' => 'login']);
+        $builder->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
+        $builder->connect('/register', ['controller' => 'Users', 'action' => 'register']);
         /*
         * Products
         */
