@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+
 /**
  * Users Controller
  *
@@ -16,6 +17,14 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null|void Renders view
      */
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        // Configure the login action to not require authentication, preventing
+        // the infinite redirect loop issue
+        $this->Authentication->addUnauthenticatedActions(['login', 'add']);
+    }
     public function index()
     {
         $users = $this->paginate($this->Users);
@@ -108,7 +117,7 @@ class UsersController extends AppController
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
-            // redirect to /articles after login success
+            // redirect to /products after login success
             $redirect = $this->request->getQuery('redirect', [
                 'controller' => 'Products',
                 'action' => 'index',
@@ -128,15 +137,8 @@ class UsersController extends AppController
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
             $this->Authentication->logout();
-            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display','home']);
         }
     }
 
-    public function beforeFilter(\Cake\Event\EventInterface $event)
-    {
-        parent::beforeFilter($event);
-        // Configure the login action to not require authentication, preventing
-        // the infinite redirect loop issue
-        $this->Authentication->addUnauthenticatedActions(['login', 'add']);
-    }
 }
