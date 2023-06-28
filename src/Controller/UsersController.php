@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Utility\Text;
 
 /**
  * Users Controller
@@ -55,13 +56,25 @@ class UsersController extends AppController
      */
     public function add()
     {
+        $this->viewBuilder()->setLayout('login');
         $user = $this->Users->newEmptyEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
+
+            if(!$user->getErrors){
+                // Process img
+                $image = $this->request->getData('img');
+                $imageName = $image->getClientFilename();
+                if ($imageName) {
+                    $filePath = WWW_ROOT . 'img/users/'.$imageName;
+                    $image->moveTo($filePath);
+                    $user->img = $imageName;
+                }
+            }
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
@@ -113,6 +126,7 @@ class UsersController extends AppController
     }
     public function login()
     {
+        $this->viewBuilder()->setLayout('login');
         $this->request->allowMethod(['get', 'post']);
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in

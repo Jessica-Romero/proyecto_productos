@@ -19,7 +19,7 @@ class StockAlertsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Brands'],
+            'contain' => ['Brands','TypeAlerts'],
         ];
         $stockAlerts = $this->paginate($this->StockAlerts);
 

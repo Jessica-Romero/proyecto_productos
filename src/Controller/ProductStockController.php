@@ -6,7 +6,7 @@ namespace App\Controller;
 /**
  * ProductStock Controller
  *
- * @property \App\Model\Table\ProductStockTable $ProductStock
+ * @property \App\Model\Table\ProductStockTable
  * @method \App\Model\Entity\ProductStock[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
  */
 class ProductStockController extends AppController
@@ -18,11 +18,15 @@ class ProductStockController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->setLayout('ProductStock');
+        $productStock = $this->ProductStock->find('list')->all();
+        $n_products = count($productStock);
         $this->paginate = [
             'contain' => ['Products', 'Shops'],
+            'limit' => $n_products,
+            'maxLimit' => 1500
         ];
         $productStock = $this->paginate($this->ProductStock);
-
         $this->set(compact('productStock'));
     }
 

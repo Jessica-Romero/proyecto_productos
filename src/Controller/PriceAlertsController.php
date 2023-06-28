@@ -19,7 +19,7 @@ class PriceAlertsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Brands', 'Shops'],
+            'contain' => ['Brands', 'Shops','TypeAlerts'],
         ];
         $priceAlerts = $this->paginate($this->PriceAlerts);
 

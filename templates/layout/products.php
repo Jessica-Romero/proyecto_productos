@@ -42,7 +42,6 @@
     <?= $this->Html->css('CakeLte./AdminLTE/plugins/fullcalendar/main.css') ?>
     <?= $this->Html->css('CakeLte.style') ?>
     <?= $this->Html->css('catalogue') ?>
-    <?= $this->Html->css('promotions') ?>
     <?= $this->Html->css('tables') ?>
     <?= $this->element('layout/css') ?>
     <?= $this->fetch('css') ?>
@@ -130,8 +129,6 @@
 <?= $this->Html->script('CakeLte./AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.js') ?>
 <?= $this->Html->script('CakeLte./AdminLTE/plugins/datatables-buttons/js/buttons.print.js') ?>
 <?= $this->Html->script('CakeLte./AdminLTE/plugins/datatables-buttons/js/buttons.colVis.js') ?>
-<!-- abg.js -->
-<?= $this->Html->script('/js/abg.js') ?>
 <!-- products.js -->
 <?= $this->Html->script('/js/products.js') ?>
 <?= $this->element('layout/script') ?>

@@ -42,7 +42,7 @@ class AppView extends View
     public function initialize(): void
     {
         parent::initialize();
-//        $this->loadHelper('Product');
+        $this->loadHelper('Product');
         $this->initializeCakeLte($options = [
             'app-name' => 'Catalogue',
             'app-logo' => 'catalogue-logo.svg',

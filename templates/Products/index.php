@@ -45,7 +45,7 @@ $this->Breadcrumbs->add([
                 <th><?= $this->Paginator->sort('brand_id') ?></th>
                 <th><?= $this->Paginator->sort('Name Competitor') ?></th>
                 <th><?= $this->Paginator->sort('Price Competitor') ?></th>
-                <th><?= $this->Paginator->sort('Last update') ?></th>
+                <th><?= $this->Paginator->sort('Created') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             </thead>
@@ -58,7 +58,7 @@ $this->Breadcrumbs->add([
                     <td><?= h($product->brand) ? $this->Product->brandName($product->brand) : '-' ?></td>
                     <td><?= empty(!($product->competitor_prices)) ? $product->competitor_prices[0]->competitor->name : '' ?></td>
                     <td><?= empty(!($product->competitor_prices)) ? $this->Number->precision($product->competitor_prices[0]->price, 2) : '' ?></td>
-                    <td><?= empty(!($product->competitor_prices)) ? $product->competitor_prices[0]->modified : '' ?></td>
+                    <td><?= empty(!($product->competitor_prices)) ? $product->competitor_prices[0]->created : '' ?></td>
                     <td class="actions">
                         <?= $this->Html->link(__('View'), ['action' => 'view', $product->id], ['class' => 'btn btn-xs btn-outline-primary', 'escape' => false]) ?>
                     </td>

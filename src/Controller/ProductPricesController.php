@@ -18,8 +18,13 @@ class ProductPricesController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->setLayout('productPrices');
+        $productPrice = $this->ProductPrices->find('list')->all();
+        $n_products = count($productPrice);
         $this->paginate = [
             'contain' => ['Products', 'Shops'],
+            'limit' => $n_products,
+            'maxLimit' => 1500
         ];
         $productPrices = $this->paginate($this->ProductPrices);
 

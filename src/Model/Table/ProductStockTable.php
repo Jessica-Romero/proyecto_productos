@@ -151,8 +151,7 @@ class ProductStockTable extends Table
                     $productStocks [] = $productStock;
                     $items_updated++;
                 }
-            } else
-                print_r('No existe producto con el sku seleccionado');
+            }
         }
         $this->saveMany($productStocks);
         Log::write('info', '{items_added} product field stock  added', ['items_added' => $items_added]);

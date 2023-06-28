@@ -26,6 +26,9 @@
     <?= $this->Html->css('CakeLte./AdminLTE/plugins/select2/css/select2.min.css') ?>
     <!-- Theme style -->
     <?= $this->Html->css('CakeLte./AdminLTE/dist/css/adminlte.min.css') ?>
+    <!-- Dropzone -->
+    <?= $this->Html->css('CakeLte./AdminLTE/plugins/dropzone/min/basic.min.css') ?>
+    <?= $this->Html->css('CakeLte./AdminLTE/plugins/dropzone/min/dropzone.min.css') ?>
     <?= $this->Html->css('CakeLte.style') ?>
     <?= $this->Html->css('catalogue') ?>
     <?= $this->element('layout/css') ?>
@@ -97,7 +100,8 @@
 <?= $this->Html->script('CakeLte./AdminLTE/dist/js/adminlte.min.js') ?>
 <!-- Select2 -->
 <?= $this->Html->script('CakeLte./AdminLTE/plugins/select2/js/select2.js') ?>
-
+<!-- Dropzone -->
+<?= $this->Html->script('CakeLte./AdminLTE/plugins/dropzone/min/dropzone.min.js') ?>
 <!-- catalogue.js -->
 <?= $this->Html->script('/js/catalogue.js') ?>
 <?= $this->element('layout/script') ?>

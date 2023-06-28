@@ -52,7 +52,6 @@
 <?= $this->Html->script('CakeLte./AdminLTE/dist/js/adminlte.min.js') ?>
 <!-- Select2 -->
 <?= $this->Html->script('CakeLte./AdminLTE/plugins/select2/js/select2.js') ?>
-
 <!-- abg.js -->
 <?= $this->Html->script('/js/catalogue.js') ?>
 <?= $this->element('layout/script') ?>

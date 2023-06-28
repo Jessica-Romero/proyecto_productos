@@ -149,10 +149,9 @@ class PriceAlertsTable extends Table
                                 array_push($alertProducts,$product);
                                 array_push($competitors,$minPrice);
                             }
-                        }else
-                            print_r(' No existe este producto en Competitor Price');
+                        }
                     }
-                    print_r('Alerta index '.$alert->id);
+                    echo"Price alert with index $alert->id \n";
                     if(count($alertProducts)>0){
                         $emails = explode(',',$alert->emails);
                         $brandName= $this->Brands->findById($alert->brand_id)->toArray();
@@ -179,10 +178,9 @@ class PriceAlertsTable extends Table
                                 array_push($alertProducts,$product);
                                 array_push($competitors,$minPrice);
                             }
-                        }else
-                            print_r(' No existe este producto en Competitor Price');
+                        }
                     }
-                    print_r('Alerta index '. $alert->id);
+                    echo"Price alert with index $alert->id \n";
                     if(count($alertProducts)>0) {
                         $emails = explode(',', $alert->emails);
                         $brandName = $this->Brands->findById($alert->brand_id)->toArray();
