@@ -271,7 +271,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'abg@mifarma.es',
+             'from' => 'abg@mifarma.es',
         ],
     ],
 

@@ -69,3 +69,15 @@ th a:hover::after {
 .product-thumb {
     width: 25px;
 }
+.abg-header {
+    background-color: transparent;
+    z-index: 99999;
+    position: fixed;
+    width: 90%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    right: 0;
+    top: 20px;
+    margin-bottom: 20px;
+}

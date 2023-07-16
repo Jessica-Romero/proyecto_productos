@@ -16,6 +16,7 @@ declare(strict_types=1);
  */
 namespace App;
 
+use Authentication\Identifier\IdentifierInterface;
 use Cake\Core\Configure;
 use Cake\Core\ContainerInterface;
 use Cake\Datasource\FactoryLocator;
@@ -146,30 +147,63 @@ class Application extends BaseApplication implements AuthenticationServiceProvid
     }
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
-        $authenticationService = new AuthenticationService([
-            'unauthenticatedRedirect' => Router::url('/users/login'),
+//        $authenticationService = new AuthenticationService([
+//            'unauthenticatedRedirect' => Router::url('/users/login'),
+//            'queryParam' => 'redirect',
+//        ]);
+//
+//        // Load identifiers, ensure we check email and password fields
+//        $authenticationService->loadIdentifier('Authentication.Password', [
+//            'fields' => [
+//                'username' => 'email',
+//                'password' => 'password',
+//            ]
+//        ]);
+//
+//        // Load the authenticators, you want session first
+//        $authenticationService->loadAuthenticator('Authentication.Session');
+//        // Configure form data check to pick email and password
+//        $authenticationService->loadAuthenticator('Authentication.Form', [
+//            'fields' => [
+//                'username' => 'email',
+//                'password' => 'password',
+//            ],
+//            'loginUrl' => Router::url('/users/login'),
+//        ]);
+//
+//        return $authenticationService;
+        $service = new AuthenticationService();
+
+        // Define where users should be redirected to when they are not authenticated
+        $service->setConfig([
+            'unauthenticatedRedirect' => Router::url([
+                'prefix' => false,
+                'plugin' => null,
+                'controller' => 'Users',
+                'action' => 'login',
+            ]),
             'queryParam' => 'redirect',
         ]);
 
-        // Load identifiers, ensure we check email and password fields
-        $authenticationService->loadIdentifier('Authentication.Password', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ]
+        $fields = [
+            IdentifierInterface::CREDENTIAL_USERNAME => 'email',
+            IdentifierInterface::CREDENTIAL_PASSWORD => 'password'
+        ];
+        // Load the authenticators. Session should be first.
+        $service->loadAuthenticator('Authentication.Session');
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' => $fields,
+            'loginUrl' => Router::url([
+                'prefix' => false,
+                'plugin' => null,
+                'controller' => 'Users',
+                'action' => 'login',
+            ]),
         ]);
 
-        // Load the authenticators, you want session first
-        $authenticationService->loadAuthenticator('Authentication.Session');
-        // Configure form data check to pick email and password
-        $authenticationService->loadAuthenticator('Authentication.Form', [
-            'fields' => [
-                'username' => 'email',
-                'password' => 'password',
-            ],
-            'loginUrl' => Router::url('/users/login'),
-        ]);
+        // Load identifiers
+        $service->loadIdentifier('Authentication.Password', compact('fields'));
 
-        return $authenticationService;
+        return $service;
     }
 }

@@ -132,10 +132,8 @@ class StockAlertsTable extends Table
                         ->where(['ProductStock.stock_level <=' => $alert->value])
                         ->toArray();
 
-                    if($products == null) {
-                        print_r(' Hay stock para esta alerta');
-                    }
-                    else {
+                    if($products != null){
+                        echo"Stock alert with index $alert->id \n";
                         $emails = explode(',', $alert->emails);
                         $brandName= $this->Brands->findById($alert->brand_id)->toArray();
                         $this->getMailer('StockAlert')->send('stockAlertBrands', [$emails, $products, $alert,$brandName]);
@@ -150,16 +148,25 @@ class StockAlertsTable extends Table
                             array_push($alertProducts, $product);
                         }
                     }
-                    if($alertProducts == null)
-                        print_r('Existe la cantidad mínima para este producto 2');
-                    else {
+                    if($alertProducts != null){
+                        echo"Stock alert with index $alert->id \n";
                         $emails = explode(',', $alert->emails);
                         $brandName= $this->Brands->findById($alert->brand_id)->toArray();
                         $this->getMailer('StockAlert')->send('stockAlert', [$emails, $alertProducts,$alert,$brandName]);
                         $isByBrand=false;
                         $registryId= $this->RegistryStockAlerts->addNewRegistry($alert->id,$alertProducts,$isByBrand);
                         $this->TypeAlerts->Alerts->addNewAlert($alert,$registryId,$brandName[0]->name);
+
                     }
+//                        print_r('Existe la cantidad mínima para este producto 2');
+//                    else {
+//                        $emails = explode(',', $alert->emails);
+//                        $brandName= $this->Brands->findById($alert->brand_id)->toArray();
+//                        $this->getMailer('StockAlert')->send('stockAlert', [$emails, $alertProducts,$alert,$brandName]);
+//                        $isByBrand=false;
+//                        $registryId= $this->RegistryStockAlerts->addNewRegistry($alert->id,$alertProducts,$isByBrand);
+//                        $this->TypeAlerts->Alerts->addNewAlert($alert,$registryId,$brandName[0]->name);
+//                    }
                 }
             }
 

@@ -34,7 +34,6 @@ $this->Breadcrumbs->add([
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('type_alert_id') ?></th>
-                <th><?= $this->Paginator->sort('information') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>
                 <th><?= $this->Paginator->sort('modified') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
@@ -46,7 +45,6 @@ $this->Breadcrumbs->add([
                     <td><?= $this->Number->format($alert->id) ?></td>
                     <td><?= h($alert->name) ?></td>
                     <td><?= $alert->has('type_alert') ? $this->Html->link($alert->type_alert->name, ['controller' => 'TypeAlerts', 'action' => 'view', $alert->type_alert->id]) : '' ?></td>
-                    <td><?= h($alert->information) ?></td>
                     <td><?= h($alert->created) ?></td>
                     <td><?= h($alert->modified) ?></td>
                     <td class="actions">

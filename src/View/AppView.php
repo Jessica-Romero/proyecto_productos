@@ -42,8 +42,34 @@ class AppView extends View
     public function initialize(): void
     {
         parent::initialize();
-//        $this->loadHelper('Product');
-        $this->initializeCakeLte();
+        $this->loadHelper('Product');
+        $this->initializeCakeLte($options = [
+            'app-name' => 'Catalogue',
+            'app-logo' => 'catalogue-logo.svg',
+            'app-logo-white' => 'catalogue-logo.svg',
+            'small-text' => false,
+            'dark-mode' => false,
+            'layout-boxed' => false,
+            'header.fixed' => false,
+            'header.border' => true,
+            'header.style' => \CakeLte\View\Styles\Header::STYLE_WHITE,
+            'header.dropdown-legacy' => false,
+            'sidebar.fixed' => true,
+            'sidebar.collapsed' => false,
+            'sidebar.mini' => true,
+            'sidebar.mini-md' => false,
+            'sidebar.mini-xs' => false,
+            'sidebar.style' => \CakeLte\View\Styles\Sidebar::STYLE_LIGHT_WHITE,
+            'sidebar.flat-style' => false,
+            'sidebar.legacy-style' => false,
+            'sidebar.compact' => false,
+            'sidebar.child-indent' => false,
+            'sidebar.child-hide-collapse' => false,
+            'sidebar.disabled-auto-expand' => false,
+            'footer.fixed' => false,
+        ]);
+
         $this->loadHelper('Authentication.Identity');
+
     }
 }

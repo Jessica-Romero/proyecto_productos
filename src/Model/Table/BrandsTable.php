@@ -98,7 +98,7 @@ class BrandsTable extends Table
                 Log::write('error', 'An error ocurred adding {brand}', ['brand' => $name]);
                 $result = false;
             }
-            Log::write('info', 'The brands added', ['brand' => $brand->name]);
+         //  Log::write('info', 'The brands added', ['brand' => $brand->name]);
 
             return $result;
     }

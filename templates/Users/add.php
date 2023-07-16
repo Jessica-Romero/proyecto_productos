@@ -15,15 +15,16 @@ $this->Breadcrumbs->add([
 ?>
 
 <div class="card card-primary card-outline">
-  <?= $this->Form->create($user) ?>
+  <?= $this->Form->create($user, ['type'=> 'file']);?>
   <div class="card-body">
     <?php
       echo $this->Form->control('name');
       echo $this->Form->control('email');
       echo $this->Form->control('password');
-      echo $this->Form->control('img');
+      echo $this->Form->control('img', ['type' => 'file']);
     ?>
   </div>
+
 
   <div class="card-footer d-flex">
     <div class="ml-auto">

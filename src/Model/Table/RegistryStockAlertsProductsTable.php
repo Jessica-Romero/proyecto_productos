@@ -117,9 +117,9 @@ class RegistryStockAlertsProductsTable extends Table
             }
         }
         if ($this->saveMany($registries)) {
-            Log::write('info', 'The registry price alert product added');
+            Log::write('info', 'The registry stock alert product added');
         }else{
-            Log::write('error', 'An error ocurred adding {registry price alert}', ['registry' => $alert_id]);
+            Log::write('error', 'An error ocurred adding {registry stock alert}', ['registry' => $alert_id]);
             $result = false;
         }
         return $result;

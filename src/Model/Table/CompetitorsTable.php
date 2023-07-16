@@ -92,7 +92,7 @@ class CompetitorsTable extends Table
                         array_push($items, $data[7]);
                     }
                 }else {
-                    echo 'finished add Competitor';
+                    echo "finished add Competitor \n";
                 }
                 $row++;
             }
@@ -105,7 +105,7 @@ class CompetitorsTable extends Table
             array_search($competitorsCsv[$id],$competitors)?array_search($competitorsCsv[$id],$competitors):$this->addNewCompetitor($competitorsCsv[$id]);
         }
 
-        print_r('addCompetitorPrice');
+        echo "addCompetitorPrice \n";
 
         $row = 2;
         //addCompetitorPrice
@@ -128,24 +128,40 @@ class CompetitorsTable extends Table
                                     ->select('id')
                                     ->first();
 
-                                $num=str_replace(',','.',min($price));
-                                if(!$product_id){
-                                    print_r('no existe el producto');
-                                }else{
+//                                if(!$product_id){
+//                                    print_r('no existe el producto');
+//                                }else{
+//                                    $num=str_replace(',','.',min($price));
+//                                    $product = $this->CompetitorPrices->find()
+//                                        ->where(['CompetitorPrices.product_id' => $product_id['id'],'CompetitorPrices.competitor_id' =>$competitor_id['id']])
+//                                        ->first();
+//                                    //If CompetitorPrice doesn't exist
+//                                    if(!$product){
+//                                        $product = $this->newEmptyEntity();
+//                                        $product->competitor_id = $competitor_id['id'];
+//                                        $product->product_id = $product_id['id'];
+//                                        $product->price = (double)$num;
+//                                        $products[] = $product;
+//                                    }else{
+//                                        $product->price = (double)$num;
+//                                        $products[] = $product;
+//                                    }
+//                                }
+                                if($product_id){
+                                    $num=str_replace(',','.',min($price));
                                     $product = $this->CompetitorPrices->find()
-                                        ->where(['CompetitorPrices.product_id' => $product_id['id'],'CompetitorPrices.competitor_id' =>$competitor_id['id']])
-                                        ->first();
-                                    //If CompetitorPrice doesn't exist
-                                    if(!$product){
-                                        $product = $this->newEmptyEntity();
-                                        $product->competitor_id = $competitor_id['id'];
-                                        $product->product_id = $product_id['id'];
+                                     ->where(['CompetitorPrices.product_id' => $product_id['id'],'CompetitorPrices.competitor_id' =>$competitor_id['id']])->first();
+                                  //If CompetitorPrice doesn't exist
+                                  if(!$product){
+                                       $product = $this->newEmptyEntity();
+                                       $product->competitor_id = $competitor_id['id'];
+                                      $product->product_id = $product_id['id'];
+                                      $product->price = (double)$num;
+                                       $products[] = $product;
+                                  }else{
                                         $product->price = (double)$num;
-                                        $products[] = $product;
-                                    }else{
-                                        $product->price = (double)$num;
-                                        $products[] = $product;
-                                    }
+                                       $products[] = $product;
+                                  }
                                 }
                                 $xproduct = array();
                                 $price = array();
@@ -156,7 +172,7 @@ class CompetitorsTable extends Table
                         }
                     }
                 }else {
-                    echo 'finished competitor Price';
+                    echo "finished competitor Price \n";
                 }
                 $row++;
             }
